@@ -8,6 +8,8 @@ import { InputModeToggle } from "./components/input-mode-toggle";
 import { ResultsPanel } from "./components/results-panel";
 import { TextInputPanel } from "./components/text-input-panel";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+
 export function App() {
   const [file, setFile] = useState<File | null>(null);
   const [inputText, setInputText] = useState("");
@@ -28,7 +30,7 @@ export function App() {
       const formData = new FormData();
       formData.append("file", fileToProcess);
 
-      const response = await fetch("http://localhost:5000/process_file", {
+      const response = await fetch(`${BACKEND_URL}/process_file`, {
         method: "POST",
         body: formData,
       });
