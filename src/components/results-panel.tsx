@@ -21,6 +21,24 @@ export function ResultsPanel({
     : "normalized.json";
 
 
+  const columnsOrder = [
+    "zip",
+    "oblast",
+    "city",
+    "district",
+    "street",
+    "build",
+    "corp",
+    "entrance",
+    "floor",
+    "room",
+    "code",
+    "provider",
+    "branch_type",
+    "branch_id",
+    "poi",
+  ];
+
   const rawKeys =
     previewData.length > 0
       ? Array.from(
@@ -32,9 +50,24 @@ export function ResultsPanel({
         )
       : [];
 
-  const endKeys = ["normalized", "original"];
-  const startKeys = rawKeys.filter((k) => !endKeys.includes(k));
-  const allKeys = [...startKeys, ...endKeys];
+  const filteredKeys = rawKeys.filter((k) => k !== "normalized");
+
+  const allKeys = filteredKeys.sort((a, b) => {
+    if (a === "original") return 1;
+    if (b === "original") return -1;
+
+    const indexA = columnsOrder.indexOf(a);
+    const indexB = columnsOrder.indexOf(b);
+
+    if (indexA !== -1 && indexB !== -1) {
+      return indexA - indexB;
+    }
+
+    if (indexA !== -1) return -1;
+    if (indexB !== -1) return 1;
+
+    return a.localeCompare(b);
+  });
 
   return (
     <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
